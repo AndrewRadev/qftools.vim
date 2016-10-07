@@ -4,8 +4,8 @@ function! qftools#DeleteByPattern(pattern, bang)
 
   let new_qflist = []
   for entry in getqflist()
-    if (!s:EntryMatches(entry, a:pattern) && a:bang == '') ||
-          \ (s:EntryMatches(entry, a:pattern) && a:bang == '!')
+    if (!s:QfEntryMatches(entry, a:pattern) && a:bang == '') ||
+          \ (s:QfEntryMatches(entry, a:pattern) && a:bang == '!')
       call add(new_qflist, entry)
     else
       call add(deleted, entry)
@@ -23,8 +23,8 @@ endfunction
 
 function! qftools#DeleteLines(start, end)
   let saved_view = winsaveview()
-  let start        = a:start - 1
-  let end          = a:end - 1
+  let start      = a:start - 1
+  let end        = a:end - 1
 
   let qflist  = getqflist()
   call remove(qflist, start, end)
@@ -36,8 +36,8 @@ endfunction
 
 function! qftools#DeleteLinesExcept(start, end)
   let saved_view = winsaveview()
-  let start        = a:start - 1
-  let end          = a:end - 1
+  let start      = a:start - 1
+  let end        = a:end - 1
 
   let qflist = getqflist()
   let last_index = len(qflist) - 1
@@ -48,6 +48,82 @@ function! qftools#DeleteLinesExcept(start, end)
   echo
 endfunction
 
-function! s:EntryMatches(entry, pattern)
+function! qftools#Append(command)
+  let qflist = getqflist()
+
+  try
+    exe a:command
+  catch
+    " don't try to sort if there's an error, just bail out
+    echoerr v:exception
+    return
+  endtry
+
+  call extend(qflist, getqflist())
+  call setqflist(qflist)
+endfunction
+
+function! qftools#Prepend(command)
+  let qflist = getqflist()
+
+  try
+    exe a:command
+  catch
+    " don't try to sort if there's an error, just bail out
+    echoerr v:exception
+    return
+  endtry
+
+  call extend(qflist, getqflist(), 0)
+  call setqflist(qflist)
+endfunction
+
+function! qftools#Sort(command)
+  if a:command != ''
+    " there's a quickfix-related command given, execute it first
+    try
+      exe a:command
+    catch
+      " don't try to sort if there's an error, just bail out
+      echoerr v:exception
+      return
+    endtry
+  endif
+
+  let qflist = copy(getqflist())
+  call sort(qflist, function('qftools#SortCompare'))
+  call setqflist(qflist)
+endfunction
+
+function! qftools#Merge(command)
+  let qflist = getqflist()
+
+  try
+    exe a:command
+  catch
+    " don't try to sort if there's an error, just bail out
+    echoerr v:exception
+    return
+  endtry
+
+  call extend(qflist, getqflist(), 0)
+  call sort(qflist, function('qftools#SortCompare'))
+  call setqflist(qflist)
+endfunction
+
+function! s:QfEntryMatches(entry, pattern)
   return (a:entry.text =~ a:pattern) || (bufname(a:entry.bufnr) =~ a:pattern)
+endfunction
+
+function! qftools#SortCompare(x, y)
+  let x_name = bufname(a:x.bufnr)
+  let y_name = bufname(a:y.bufnr)
+
+  if x_name < y_name
+    return -1
+  elseif x_name > y_name
+    return 1
+  else
+    return 0
+  else
 endfunction

@@ -20,3 +20,8 @@ command! -buffer -nargs=1 -bang Delete call qftools#DeleteByPattern(<f-args>, '<
 
 command! -buffer -range DeleteLines call qftools#DeleteLines(<line1>, <line2>)
 command! -buffer -range Only        call qftools#DeleteLinesExcept(<line1>, <line2>)
+
+command! -buffer -nargs=* -complete=command Append  call qftools#Append(<q-args>)
+command! -buffer -nargs=* -complete=command Prepend call qftools#Prepend(<q-args>)
+command! -buffer -nargs=* -complete=command Sort    call qftools#Sort(<q-args>)
+command! -buffer -nargs=* -complete=command Merge   call qftools#Merge(<q-args>)
