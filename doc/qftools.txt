@@ -1,0 +1,57 @@
+*qftools.txt*	TODO
+
+==============================================================================
+CONTENTS                                        *qftools*   *qftools-contents*
+
+    Installation................................: |qftools-installation|
+    Usage.......................................: |qftools-usage|
+    Settings....................................: |qftools-settings|
+    Internals...................................: |qftools-internals|
+    Issues......................................: |qftools-issues|
+
+
+==============================================================================
+INSTALLATION                                            *qftools-installation*
+
+There are several ways to install the plugin. The recommended one is by using
+Tim Pope's pathogen (http://www.vim.org/scripts/script.php?script_id=2332). In
+that case, you can clone the plugin's git repository like so:
+>
+    git clone git://github.com/AndrewRadev/qftools.vim.git ~/.vim/bundle/qftools
+<
+If your vim configuration is under git version control, you could also set up
+the repository as a submodule, which would allow you to update more easily.
+The command is (provided you're in ~/.vim):
+>
+    git submodule add git://github.com/AndrewRadev/qftools.vim.git bundle/qftools
+<
+
+Another way is to simply copy all the essential directories inside the ~/.vim
+directory: TODO list of directories
+
+
+==============================================================================
+USAGE                                                          *qftools-usage*
+
+TODO
+
+
+==============================================================================
+SETTINGS                                                    *qftools-settings*
+
+TODO
+
+
+==============================================================================
+INTERNALS                                                  *qftools-internals*
+
+TODO
+
+==============================================================================
+ISSUES                                                        *qftools-issues*
+
+Any issues and suggestions are very welcome on the github bugtracker:
+https://github.com/AndrewRadev/qftools.vim/issues
+
+
+vim:tw=78:sw=4:ft=help:norl:
