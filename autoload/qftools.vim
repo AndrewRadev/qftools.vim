@@ -29,13 +29,6 @@ function! qftools#RemovePattern(pattern, params)
   echo
 endfunction
 
-function! qftools#CompleteText(argument_lead, command_line, cursor_position)
-  let text = join(map(getqflist(), 'v:val.text'), " ")
-  let words = qftools#Scan(text, '\k\+')
-  call uniq(sort(words))
-  return join(words, "\n")
-endfunction
-
 function! qftools#DeleteMotion(_type)
   call qftools#RemoveLines(line("'["), line("']"))
 endfunction
@@ -130,8 +123,11 @@ function! qftools#Merge(command)
   call setqflist(qflist)
 endfunction
 
-function! s:QfEntryMatches(entry, pattern)
-  return (a:entry.text =~ a:pattern) || (bufname(a:entry.bufnr) =~ a:pattern)
+function! qftools#CompleteText(argument_lead, command_line, cursor_position)
+  let text = join(map(getqflist(), 'v:val.text'), " ")
+  let words = qftools#Scan(text, '\k\+')
+  call uniq(sort(words))
+  return join(words, "\n")
 endfunction
 
 function! qftools#SortCompare(x, y)
