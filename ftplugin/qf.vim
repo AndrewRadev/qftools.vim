@@ -1,6 +1,6 @@
-xnoremap <buffer> d :DeleteLines<cr>
+xnoremap <buffer> d :RemoveLines<cr>
 nnoremap <buffer> d :set opfunc=qftools#DeleteMotion<cr>g@
-nnoremap <buffer> dd V:DeleteLines<cr>
+nnoremap <buffer> dd V:RemoveLines<cr>
 
 nnoremap <silent> <buffer> u     :silent! colder<cr>
 nnoremap <silent> <buffer> <c-r> :silent! cnewer<cr>
@@ -32,8 +32,8 @@ command! -buffer -nargs=1 -complete=file
       \ KeepFile
       \ call qftools#RemovePattern(<f-args>, {'source': 'file', 'invert': 1})
 
-command! -buffer -range DeleteLines call qftools#DeleteLines(<line1>, <line2>)
-command! -buffer -range KeepLines   call qftools#DeleteLinesExcept(<line1>, <line2>)
+command! -buffer -range RemoveLines call qftools#RemoveLines(<line1>, <line2>)
+command! -buffer -range KeepLines   call qftools#KeepLines(<line1>, <line2>)
 
 command! -buffer -nargs=* -complete=command Append  call qftools#Append(<q-args>)
 command! -buffer -nargs=* -complete=command Prepend call qftools#Prepend(<q-args>)

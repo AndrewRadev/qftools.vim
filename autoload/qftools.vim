@@ -37,10 +37,10 @@ function! qftools#CompleteText(argument_lead, command_line, cursor_position)
 endfunction
 
 function! qftools#DeleteMotion(_type)
-  call qftools#DeleteLines(line("'["), line("']"))
+  call qftools#RemoveLines(line("'["), line("']"))
 endfunction
 
-function! qftools#DeleteLines(start, end)
+function! qftools#RemoveLines(start, end)
   let saved_view = winsaveview()
   let start      = a:start - 1
   let end        = a:end - 1
@@ -53,7 +53,7 @@ function! qftools#DeleteLines(start, end)
   echo
 endfunction
 
-function! qftools#DeleteLinesExcept(start, end)
+function! qftools#KeepLines(start, end)
   let saved_view = winsaveview()
   let start      = a:start - 1
   let end        = a:end - 1
