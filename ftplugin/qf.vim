@@ -16,16 +16,20 @@ nnoremap <buffer> i <c-w><cr><c-w>K
 " open in a vertical split
 nnoremap <buffer> S <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t
 
-" TODO (2016-10-07) Completion? Keywords, files, directories from the quickfix buffer?
-
-command! -buffer -nargs=1 RemoveText
+command! -buffer -nargs=1 -complete=custom,qftools#CompleteText
+      \ RemoveText
       \ call qftools#RemovePattern(<f-args>, {'source': 'text', 'invert': 0})
-command! -buffer -nargs=1 RemoveFile
+
+command! -buffer -nargs=1 -complete=file
+      \ RemoveFile
       \ call qftools#RemovePattern(<f-args>, {'source': 'file', 'invert': 0})
 
-command! -buffer -nargs=1 KeepText
+command! -buffer -nargs=1 -complete=custom,qftools#CompleteText
+      \ KeepText
       \ call qftools#RemovePattern(<f-args>, {'source': 'text', 'invert': 1})
-command! -buffer -nargs=1 KeepFile
+
+command! -buffer -nargs=1 -complete=file
+      \ KeepFile
       \ call qftools#RemovePattern(<f-args>, {'source': 'file', 'invert': 1})
 
 command! -buffer -range DeleteLines call qftools#DeleteLines(<line1>, <line2>)

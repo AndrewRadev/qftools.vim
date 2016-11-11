@@ -29,6 +29,13 @@ function! qftools#RemovePattern(pattern, params)
   echo
 endfunction
 
+function! qftools#CompleteText(argument_lead, command_line, cursor_position)
+  let text = join(map(getqflist(), 'v:val.text'), " ")
+  let words = qftools#Scan(text, '\k\+')
+  call uniq(sort(words))
+  return join(words, "\n")
+endfunction
+
 function! qftools#DeleteMotion(_type)
   call qftools#DeleteLines(line("'["), line("']"))
 endfunction
@@ -138,4 +145,19 @@ function! qftools#SortCompare(x, y)
   else
     return 0
   else
+endfunction
+
+function! qftools#Scan(text, pattern)
+  let offset = 0
+  let matches = []
+
+  let [match, start, end] = matchstrpos(a:text, a:pattern, offset)
+
+  while start > 0
+    call add(matches, match)
+    let offset = end + 1
+    let [match, start, end] = matchstrpos(a:text, a:pattern, offset)
+  endwhile
+
+  return matches
 endfunction
