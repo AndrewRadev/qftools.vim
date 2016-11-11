@@ -1,14 +1,26 @@
-function! qftools#DeleteByPattern(pattern, bang)
+function! qftools#RemovePattern(pattern, params)
+  let pattern = a:pattern
+  let source  = a:params.source
+  let invert  = a:params.invert
+
   let saved_view = winsaveview()
   let deleted    = []
 
   let new_qflist = []
   for entry in getqflist()
-    if (!s:QfEntryMatches(entry, a:pattern) && a:bang == '') ||
-          \ (s:QfEntryMatches(entry, a:pattern) && a:bang == '!')
-      call add(new_qflist, entry)
+    if source == 'text'
+      let pattern_matches = (entry.text =~ pattern)
+    elseif source == 'file'
+      let pattern_matches = (bufname(entry.bufnr) =~ pattern)
     else
+      echoerr "Unknown 'source': ".source
+      return
+    endif
+
+    if (pattern_matches && !invert) || (!pattern_matches && invert)
       call add(deleted, entry)
+    else
+      call add(new_qflist, entry)
     endif
   endfor
 
@@ -26,7 +38,7 @@ function! qftools#DeleteLines(start, end)
   let start      = a:start - 1
   let end        = a:end - 1
 
-  let qflist  = getqflist()
+  let qflist = getqflist()
   call remove(qflist, start, end)
   call setqflist(qflist)
 
