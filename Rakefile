@@ -1,9 +1,4 @@
-task :default do
-  sh 'rspec spec'
-end
-
 desc "Prepare archive for deployment"
 task :archive do
-  puts "TODO"
-  # sh 'zip -r ~/qftools.zip doc/qftools.txt'
+  sh 'zip -r ~/qftools.zip autoload/ doc/qftools.txt ftplugin/ plugin/'
 end

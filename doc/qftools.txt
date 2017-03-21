@@ -44,9 +44,8 @@ quickfix window, but want to add another grep to it, this could help:
     :Ack ProjectCollaborator
     :Qfappend Ack UserCollaborator
 <
-This will add the new search results to the end of the quickfix list,
-instead of replacing it. You could also put swap the order by using
-`:Qfprepend`:
+This will add the new search results to the end of the quickfix list, instead
+of replacing it. You could also swap the order by using `:Qfprepend`:
 >
     :Ack ProjectCollaborator
     :Qfprepend Ack UserCollaborator
@@ -106,23 +105,22 @@ commands:
     <start>,<end>RemoveLines
     <start>,<end>KeepLines
 <
-The range is a perfectly normal |range|, so visual mode works with these two
-commands. You can mark a visual-mode selection and run `:RemoveLines` to
-remove the selection from the quickfix window.
+The range is a perfectly normal |range|, so visual mode works with both of
+these. You can mark a visual-mode selection and run `:RemoveLines` to remove
+the selection from the quickfix window.
 
 You can disable these commands by setting |g:qftools_no_buffer_commands| to 1.
 
-Instead of using these commands, you can also use the |d| mapping similar to
-the built-in one:
+You can also use the |d| mapping similar to the built-in one:
 
 - |dd| removes a single line
 - visual-mode d (|v_d|) removes the selected lines
 - |d|{motion} deletes the lines affected by the motion (for instance, dG would
   delete all lines till the end of the buffer)
 
-You can also "undo" and "redo" deletions by using |u| and |<c-r>|. These
-mappings are not as powerful as Vim's built-in undo mechanism, but they should
-work mostly as expected. Currently, all they do is provide a thin wrapper to
+You can "undo" and "redo" deletions by using |u| and |<c-r>|. These mappings
+are not as powerful as Vim's built-in undo mechanism, but they should work
+mostly as expected. Currently, all they do is provide a thin wrapper to
 |:colder| and |:cnewer|.
 
 You can disable these mappings by setting |g:qftools_no_buffer_mappings| to 1.
@@ -138,7 +136,7 @@ different ways:
 - `i` opens the file in a new horizontal split
 - `S` opens the file in a new vertical split
 
-You can disable these mappings by setting |g:qftools_no_buffer_mappings| to 1.
+They've been taken pretty much as-is from the ack.vim plugin (https://github.com/mileszs/ack.vim). You can disable them by setting |g:qftools_no_buffer_mappings| to 1.
 
 
 ==============================================================================
