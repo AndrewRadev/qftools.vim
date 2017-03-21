@@ -1,3 +1,5 @@
+Note: *Some* of the functionality of this plugin overlaps with [vim-qf](https://github.com/romainl/vim-qf). At this time, vim-qf seems more mature, so you might want to consider using that one instead.
+
 ## Usage
 
 This plugin provides various commands and mappings to work with the contents of the quickfix window.
