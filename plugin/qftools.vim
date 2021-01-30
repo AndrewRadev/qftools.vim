@@ -19,5 +19,7 @@ command! -nargs=* -complete=command Qfprepend call qftools#Prepend(<q-args>)
 command! -nargs=* -complete=command Qfsort    call qftools#Sort(<q-args>)
 command! -nargs=* -complete=command Qfmerge   call qftools#Merge(<q-args>)
 
+command! -nargs=0 Qfcompact call qftools#Compact()
+
 let &cpo = s:keepcpo
 unlet s:keepcpo

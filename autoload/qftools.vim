@@ -123,6 +123,19 @@ function! qftools#Merge(command)
   call setqflist(qflist)
 endfunction
 
+function! qftools#Compact()
+  let new_qflist = []
+
+  for entry in getqflist()
+    if entry.lnum > 0
+      call add(new_qflist, entry)
+    endif
+  endfor
+
+  call uniq(new_qflist)
+  call setqflist(new_qflist)
+endfunction
+
 function! qftools#CompleteText(argument_lead, command_line, cursor_position)
   let text = join(map(getqflist(), 'v:val.text'), " ")
   let words = qftools#Scan(text, '\k\+')

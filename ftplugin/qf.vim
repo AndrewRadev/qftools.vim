@@ -42,4 +42,6 @@ if !g:qftools_no_buffer_commands
   command! -buffer -nargs=* -complete=command Prepend call qftools#Prepend(<q-args>)
   command! -buffer -nargs=* -complete=command Sort    call qftools#Sort(<q-args>)
   command! -buffer -nargs=* -complete=command Merge   call qftools#Merge(<q-args>)
+
+  command! -buffer -nargs=0 Compact call qftools#Compact()
 endif

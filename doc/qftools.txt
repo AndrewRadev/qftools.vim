@@ -36,7 +36,7 @@ USAGE                                                          *qftools-usage*
 This plugin provides various commands and mappings to work with the contents
 of the quickfix window.
 
-Append, sort, merge ~
+Append, sort, merge, compact ~
 
 If you've executed a grep/ack command and you have a bunch of stuff in your
 quickfix window, but want to add another grep to it, this could help:
@@ -65,13 +65,38 @@ allowing you to do:
     :Ack ProjectCollaborator
     :Qfsort Qfappend Ack UserCollaborator
 <
+If you just have the results of one command and would like to remove "empty"
+lines (ones without a line number that get highlighted as comments), you can
+use the `:Qfcompact` function, which also removes duplicates.
+>
+    :make
+    :Qfcompact
+<
 The same commands are available without the "Qf" prefix within the actual buffer:
 >
     :Append
     :Prepend
     :Sort
     :Merge
+    :Compact
 <
+
+Automatic processing ~
+
+If you'd like to automatically sort quickfix entries by file with `:Qfsort`,
+or remove empty lines using `Qfcompact`, it's possible to use Vim's built-in
+tools to trigger the plugin's commands/functions automatically:
+>
+    augroup quickfix_post
+      autocmd!
+      autocmd QuickFixCmdPost * Qfcompact
+
+      " or, if the above doesn't work, queue up the command for the next tick:
+      autocmd QuickFixCmdPost * call timer_start(1, {-> execute('Qfcompact')})
+    augroup END
+<
+The timer stuff seems to be an unfortunate complication on my build.
+Autocommand interactions with quickfix lists are a bit weird.
 
 Filtering entries ~
 
