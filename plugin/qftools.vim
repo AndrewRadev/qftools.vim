@@ -21,5 +21,8 @@ command! -nargs=* -complete=command Qfmerge   call qftools#Merge(<q-args>)
 
 command! -nargs=0 Qfcompact call qftools#Compact()
 
+command! -nargs=1 -complete=file Qfsave call qftools#Save(<f-args>)
+command! -nargs=1 -complete=file Qfload call qftools#Load(<f-args>)
+
 let &cpo = s:keepcpo
 unlet s:keepcpo

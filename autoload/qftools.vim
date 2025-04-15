@@ -170,3 +170,30 @@ function! qftools#Scan(text, pattern)
 
   return matches
 endfunction
+
+function! qftools#Save(filename) abort
+  let list = getqflist()
+
+  for entry in list
+    " Resolve each buffer to a filename, modify to take the absolute path
+    let entry.filename = fnamemodify(bufname(entry.bufnr), ':p')
+    " Remove bufnr to make sure Vim will deserialize the filename instead
+    unlet entry.bufnr
+  endfor
+
+  let serialized_list = map(list, {_, entry -> json_encode(entry) })
+  call writefile(serialized_list, a:filename)
+endfunction
+
+function! qftools#Load(filename) abort
+  if !filereadable(a:filename)
+    echoerr "File not readable: " .. a:filename
+    return
+  endif
+
+  let file_contents = readfile(a:filename)
+  let quickfix_entries = map(file_contents, {_, line -> json_decode(line) })
+
+  call setqflist(quickfix_entries)
+  copen
+endfunction

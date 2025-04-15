@@ -44,7 +44,6 @@ The same commands are available without the "Qf" prefix within the actual buffer
 :Merge
 ```
 
-
 ### Filtering entries
 
 The plugin defines commands to remove lines by pattern:
@@ -95,6 +94,23 @@ You can also use the `d` mapping similar to the built-in one:
 You can "undo" and "redo" deletions by using `u` and `<c-r>`. These mappings are not as powerful as Vim's built-in undo mechanism, but they should work mostly as expected. Currently, all they do is provide a thin wrapper to `:colder` and `:cnewer`.
 
 You can disable these mappings by setting `g:qftools_no_buffer_mappings` to 1.
+
+### Saving and loading
+
+If you'd like to persist a quickfix list to a file, you can use `:Qfsave` and `:Qfload`, which saves the list in a file with one JSON entry per line:
+
+```vim
+:Ack ProjectCollaborator
+:Qfsave collaborator_results.jsonl
+```
+
+To load the results later, provide the same filename:
+
+```vim
+:Qfload collaborator_results.jsonl
+```
+
+Inside the quickfix buffer, these commands are available as `:Save` and `:Load`.
 
 ### Open mappings
 

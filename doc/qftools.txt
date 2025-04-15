@@ -150,6 +150,20 @@ mostly as expected. Currently, all they do is provide a thin wrapper to
 
 You can disable these mappings by setting |g:qftools_no_buffer_mappings| to 1.
 
+Saving and loading ~
+
+If you'd like to persist a quickfix list to a file, you can use `:Qfsave` and
+`:Qfload`, which saves the list in a file with one JSON entry per line:
+>
+    :Ack ProjectCollaborator
+    :Qfsave collaborator_results.jsonl
+<
+To load the results later, provide the same filename:
+>
+    :Qfload collaborator_results.jsonl
+<
+Inside the quickfix buffer, these commands are available as `:Save` and `:Load`.
+
 Open mappings ~
 
 There are buffer-specific mappings defined that help you open files in

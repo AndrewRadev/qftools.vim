@@ -44,4 +44,7 @@ if !g:qftools_no_buffer_commands
   command! -buffer -nargs=* -complete=command Merge   call qftools#Merge(<q-args>)
 
   command! -buffer -nargs=0 Compact call qftools#Compact()
+
+  command! -buffer -nargs=1 -complete=file Save call qftools#Save(<f-args>)
+  command! -buffer -nargs=1 -complete=file Load call qftools#Load(<f-args>)
 endif
