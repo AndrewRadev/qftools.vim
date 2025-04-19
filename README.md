@@ -1,5 +1,3 @@
-Note: *Some* of the functionality of this plugin overlaps with [vim-qf](https://github.com/romainl/vim-qf). At this time, vim-qf seems more mature, so you might want to consider using that one instead.
-
 ## Usage
 
 This plugin provides various commands and mappings to work with the contents of the quickfix window.
@@ -132,3 +130,8 @@ There are buffer-specific mappings defined that help you open files in different
 - `S` opens the file in a new vertical split
 
 They've been taken pretty much as-is from the [ack.vim plugin](https://github.com/mileszs/ack.vim). You can disable them by setting `g:qftools_no_buffer_mappings` to 1.
+
+## Alternatives
+
+- [vim-qf](https://github.com/romainl/vim-qf) includes some of the functionality of this plugin and it's older, so it might be more reliable.
+- [persist-quickfix.nvim](https://github.com/brunobmello25/persist-quickfix.nvim) allows saving and loading quickfix windows, though with a different interface. Neovim-only.
