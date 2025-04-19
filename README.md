@@ -112,6 +112,15 @@ To load the results later, provide the same filename:
 
 Inside the quickfix buffer, these commands are available as `:Save` and `:Load`.
 
+You can let the plugin automatically save and load your quickfix lists in a similar way to how `persistent-undo` works. You need to set `g:qftools_autosave` to 1, and you should also make sure that the directory specified in `g:qftools_autosave_dir` works for you. You can test the autosave/autoload mechanism by calling the functions directly:
+
+```vim
+:call qftools#AutoSave()
+:call qftools#AutoLoad()
+```
+
+By default, the last 10 lists will be saved, but you can change that value from `g:qftools_autosave_max_count`.
+
 ### Open mappings
 
 There are buffer-specific mappings defined that help you open files in different ways:

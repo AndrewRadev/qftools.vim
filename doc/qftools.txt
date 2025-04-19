@@ -164,6 +164,18 @@ To load the results later, provide the same filename:
 <
 Inside the quickfix buffer, these commands are available as `:Save` and `:Load`.
 
+You can let the plugin automatically save and load your quickfix lists in a
+similar way to how |persistent-undo| works. You need to set
+|g:qftools_autosave| to 1, and you should also make sure that the directory
+specified in |g:qftools_autosave_dir| works for you. You can test the
+autosave/autoload mechanism by calling the functions directly:
+>
+    :call qftools#AutoSave()
+    :call qftools#AutoLoad()
+<
+By default, the last 10 lists will be saved, but you can change that value
+from `g:qftools_autosave_max_count`.
+
 Open mappings ~
 
 There are buffer-specific mappings defined that help you open files in
@@ -201,11 +213,39 @@ Setting this to 1 disables the buffer-specific mappings defined in the
 quickfix window. You can still use the buffer-specific and global commands, or
 the autoloaded functions to make use of the plugin.
 
+                                                            *g:qftools_autosave*
+>
+    let g:qftools_autosave = 1
+<
+Default value: 0
 
-==============================================================================
-INTERNALS                                                  *qftools-internals*
+If this variable is set to 1, the plugin will attempt to save the quickfix
+list history to separate files under a directory specified by
+|g:qftools_autosave_dir|. This setting is off by default to avoid "magic"
+happening without the user's explicit choice (and to avoid issues in the case
+of bugs).
 
-TODO
+                                                        *g:qftools_autosave_dir*
+>
+    let g:qftools_autosave_dir = '$HOME/.cache/vim-qftools/'
+<
+Default value: $HOME/.vim-qftools/
+
+The directory to store quickfix lists in. It defaults to a hidden directory in
+your $HOME. The plugin will not autosave and autoload unless explicitly
+enabled by |g:qftools_autosave|.
+
+                                                  *g:qftools_autosave_max_count*
+>
+    let g:qftools_autosave_max_count = 1
+<
+Default value: 10
+
+The maximum number of lists to autosave. Set to 1 to just save the current
+quickfix list. If this number is larger than 'chistory', the value of that
+setting takes precedence (since Vim itself won't hold more lists than that).
+
+
 
 ==============================================================================
 ISSUES                                                        *qftools-issues*
