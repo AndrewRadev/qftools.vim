@@ -183,7 +183,7 @@ function! qftools#Save(filename, items) abort
   call writefile(serialized_list, a:filename)
 endfunction
 
-function! qftools#Load(filename) abort
+function! qftools#Load(filename, params) abort
   if !filereadable(a:filename)
     echoerr "File not readable: " .. a:filename
     return
@@ -193,7 +193,10 @@ function! qftools#Load(filename) abort
   let quickfix_entries = map(file_contents, {_, line -> json_decode(line) })
 
   call setqflist(quickfix_entries)
-  copen
+
+  if a:params.open
+    copen
+  endif
 endfunction
 
 function! qftools#AutoSave() abort
@@ -203,6 +206,10 @@ function! qftools#AutoSave() abort
 
   let dir       = g:qftools_autosave_dir
   let max_count = g:qftools_autosave_max_count
+
+  if max_count <= 0
+    return
+  endif
 
   if isdirectory(dir)
     for file in glob(dir..'/???.jsonl', 0, 1)
@@ -215,7 +222,7 @@ function! qftools#AutoSave() abort
   let list_ids = range(1, getqflist({'nr': '$', 'id': 0 }).id)
   call sort(list_ids)
   call reverse(list_ids)
-  let list_ids = list_ids[0:max_count]
+  let list_ids = list_ids[0:(max_count - 1)]
 
   let index = len(list_ids)
   for list_id in list_ids
@@ -241,15 +248,14 @@ function! qftools#AutoLoad() abort
     return
   endif
 
-  let loaded = 0
+  let list_count = 0
 
   for file in glob(g:qftools_autosave_dir..'/???.jsonl', 0, 1)
-    silent call qftools#Load(file)
-    let loaded = 1
-  endfor
+    call qftools#Load(file, {'open': 0})
+    let list_count += 1
 
-  if loaded
-    " Don't open quickfix window by default
-    cclose
-  endif
+    if list_count >= g:qftools_autosave_max_count
+      break
+    endif
+  endfor
 endfunction

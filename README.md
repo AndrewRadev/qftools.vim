@@ -117,7 +117,7 @@ You can let the plugin automatically save and load your quickfix lists in a simi
 :call qftools#AutoLoad()
 ```
 
-By default, the last 10 lists will be saved, but you can change that value from `g:qftools_autosave_max_count`.
+By default, only the current list will be saved, but you can save a certain number of historical lists by changing `g:qftools_autosave_max_count`.
 
 ### Open mappings
 

@@ -173,8 +173,8 @@ autosave/autoload mechanism by calling the functions directly:
     :call qftools#AutoSave()
     :call qftools#AutoLoad()
 <
-By default, the last 10 lists will be saved, but you can change that value
-from `g:qftools_autosave_max_count`.
+By default, only the current list will be saved, but you can save a certain
+number of historical lists by changing |g:qftools_autosave_max_count|.
 
 Open mappings ~
 
@@ -237,13 +237,14 @@ enabled by |g:qftools_autosave|.
 
                                                   *g:qftools_autosave_max_count*
 >
-    let g:qftools_autosave_max_count = 1
+    let g:qftools_autosave_max_count = 10
 <
-Default value: 10
+Default value: 1
 
-The maximum number of lists to autosave. Set to 1 to just save the current
-quickfix list. If this number is larger than 'chistory', the value of that
-setting takes precedence (since Vim itself won't hold more lists than that).
+The maximum number of lists to autosave. The default is 1, so it just saves
+the current quickfix list. If this number is larger than 'chistory', the value
+of that setting takes precedence (since Vim itself won't hold more lists than
+that).
 
 
 
