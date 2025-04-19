@@ -22,6 +22,10 @@ if !exists('g:qftools_autosave_dir')
   let g:qftools_autosave_dir = expand('$HOME/.vim-qftools/')
 endif
 
+if !exists('g:qftools_autosave_max_count')
+  let g:qftools_autosave_max_count = 10
+endif
+
 command! -nargs=* -complete=command Qfappend  call qftools#Append(<q-args>)
 command! -nargs=* -complete=command Qfprepend call qftools#Prepend(<q-args>)
 command! -nargs=* -complete=command Qfsort    call qftools#Sort(<q-args>)

@@ -201,16 +201,23 @@ function! qftools#AutoSave() abort
     return
   endif
 
-  if isdirectory(g:qftools_autosave_dir)
-    for file in glob(g:qftools_autosave_dir..'/???.jsonl', 0, 1)
+  let dir       = g:qftools_autosave_dir
+  let max_count = g:qftools_autosave_max_count
+
+  if isdirectory(dir)
+    for file in glob(dir..'/???.jsonl', 0, 1)
       call delete(file)
     endfor
   else
-    call mkdir(g:qftools_autosave_dir, 'p')
+    call mkdir(dir, 'p')
   endif
 
   let list_ids = range(1, getqflist({'nr': '$', 'id': 0 }).id)
+  call sort(list_ids)
+  call reverse(list_ids)
+  let list_ids = list_ids[0:max_count]
 
+  let index = len(list_ids)
   for list_id in list_ids
     let list = getqflist({'id': list_id, 'items': 0})
 
@@ -218,7 +225,8 @@ function! qftools#AutoSave() abort
     if len(items) == 0
       continue
     endif
-    let filename = g:qftools_autosave_dir..'/'..printf("%03d", list_id)..'.jsonl'
+    let filename = dir..'/'..printf("%03d", index)..'.jsonl'
+    let index -= 1
 
     call qftools#Save(filename, items)
   endfor
