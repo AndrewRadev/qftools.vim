@@ -171,17 +171,15 @@ function! qftools#Scan(text, pattern)
   return matches
 endfunction
 
-function! qftools#Save(filename) abort
-  let list = getqflist()
-
-  for entry in list
+function! qftools#Save(filename, items) abort
+  for entry in a:items
     " Resolve each buffer to a filename, modify to take the absolute path
     let entry.filename = fnamemodify(bufname(entry.bufnr), ':p')
     " Remove bufnr to make sure Vim will deserialize the filename instead
     unlet entry.bufnr
   endfor
 
-  let serialized_list = map(list, {_, entry -> json_encode(entry) })
+  let serialized_list = map(a:items, {_, entry -> json_encode(entry) })
   call writefile(serialized_list, a:filename)
 endfunction
 
@@ -196,4 +194,54 @@ function! qftools#Load(filename) abort
 
   call setqflist(quickfix_entries)
   copen
+endfunction
+
+function! qftools#AutoSave() abort
+  if !g:qftools_autosave
+    return
+  endif
+
+  if isdirectory(g:qftools_autosave_dir)
+    for file in glob(g:qftools_autosave_dir..'/???.jsonl', 0, 1)
+      call delete(file)
+    endfor
+  else
+    call mkdir(g:qftools_autosave_dir, 'p')
+  endif
+
+  let list_ids = range(1, getqflist({'nr': '$', 'id': 0 }).id)
+
+  for list_id in list_ids
+    let list = getqflist({'id': list_id, 'items': 0})
+
+    let items = list.items
+    if len(items) == 0
+      continue
+    endif
+    let filename = g:qftools_autosave_dir..'/'..printf("%03d", list_id)..'.jsonl'
+
+    call qftools#Save(filename, items)
+  endfor
+endfunction
+
+function! qftools#AutoLoad() abort
+  if !g:qftools_autosave
+    return
+  endif
+
+  if !isdirectory(g:qftools_autosave_dir)
+    return
+  endif
+
+  let loaded = 0
+
+  for file in glob(g:qftools_autosave_dir..'/???.jsonl', 0, 1)
+    silent call qftools#Load(file)
+    let loaded = 1
+  endfor
+
+  if loaded
+    " Don't open quickfix window by default
+    cclose
+  endif
 endfunction
