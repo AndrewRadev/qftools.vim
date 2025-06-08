@@ -212,7 +212,9 @@ function! qftools#AutoSave() abort
   endif
 
   for dir in dirs
-    if !isdirectory(expand(dir))
+    let dir = expand(dir)
+
+    if !isdirectory(dir)
       continue
     endif
 
@@ -249,7 +251,9 @@ function! qftools#AutoLoad() abort
   endif
 
   for dir in g:qftools_autosave_dirs
-    if !isdirectory(expand(dir))
+    let dir = expand(dir)
+
+    if !isdirectory(dir)
       continue
     endif
 
