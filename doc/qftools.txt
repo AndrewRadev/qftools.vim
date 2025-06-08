@@ -166,9 +166,12 @@ Inside the quickfix buffer, these commands are available as `:Save` and `:Load`.
 
 You can let the plugin automatically save and load your quickfix lists in a
 similar way to how |persistent-undo| works. You need to set
-|g:qftools_autosave| to 1, and you should also make sure that the directory
-specified in |g:qftools_autosave_dir| works for you. You can test the
-autosave/autoload mechanism by calling the functions directly:
+|g:qftools_autosave| to 1, and you should set  |g:qftools_autosave_dirs| to a
+list of directories to attempt to save the data in (possibly
+project-relative). The plugin will not create directories for you.
+
+You can test the autosave/autoload mechanism by calling the functions
+directly:
 >
     :call qftools#AutoSave()
     :call qftools#AutoLoad()
@@ -220,20 +223,23 @@ the autoloaded functions to make use of the plugin.
 Default value: 0
 
 If this variable is set to 1, the plugin will attempt to save the quickfix
-list history to separate files under a directory specified by
-|g:qftools_autosave_dir|. This setting is off by default to avoid "magic"
+list history to separate files under the first existing directory listed in
+|g:qftools_autosave_dirs|. This setting is off by default to avoid "magic"
 happening without the user's explicit choice (and to avoid issues in the case
 of bugs).
 
-                                                        *g:qftools_autosave_dir*
+                                                       *g:qftools_autosave_dirs*
 >
-    let g:qftools_autosave_dir = '$HOME/.cache/vim-qftools/'
+    let g:qftools_autosave_dirs = ['.git/qflists', '~/.cache/vim-qftools/']
 <
-Default value: $HOME/.vim-qftools/
+Default value: ['~/.cache/vim-qftools/']
 
-The directory to store quickfix lists in. It defaults to a hidden directory in
-your $HOME. The plugin will not autosave and autoload unless explicitly
-enabled by |g:qftools_autosave|.
+A list of directories to store quickfix lists in. It defaults to a hidden
+directory in your $HOME. This directory needs to exist in order for the plugin
+to use it. You can add a relative path to save project-relative quickfix data.
+
+The plugin will never autosave and autoload unless explicitly enabled by
+|g:qftools_autosave|.
 
                                                   *g:qftools_autosave_max_count*
 >

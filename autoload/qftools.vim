@@ -204,38 +204,42 @@ function! qftools#AutoSave() abort
     return
   endif
 
-  let dir       = g:qftools_autosave_dir
+  let dirs      = g:qftools_autosave_dirs
   let max_count = g:qftools_autosave_max_count
 
   if max_count <= 0
     return
   endif
 
-  if isdirectory(dir)
+  for dir in dirs
+    if !isdirectory(expand(dir))
+      continue
+    endif
+
     for file in glob(dir..'/???.jsonl', 0, 1)
       call delete(file)
     endfor
-  else
-    call mkdir(dir, 'p')
-  endif
 
-  let list_ids = range(1, getqflist({'nr': '$', 'id': 0 }).id)
-  call sort(list_ids)
-  call reverse(list_ids)
-  let list_ids = list_ids[0:(max_count - 1)]
+    let list_ids = range(1, getqflist({'nr': '$', 'id': 0 }).id)
+    call sort(list_ids)
+    call reverse(list_ids)
+    let list_ids = list_ids[0:(max_count - 1)]
 
-  let index = len(list_ids)
-  for list_id in list_ids
-    let list = getqflist({'id': list_id, 'items': 0})
+    let index = len(list_ids)
+    for list_id in list_ids
+      let list = getqflist({'id': list_id, 'items': 0})
 
-    let items = list.items
-    if len(items) == 0
-      continue
-    endif
-    let filename = dir..'/'..printf("%03d", index)..'.jsonl'
-    let index -= 1
+      let items = list.items
+      if len(items) == 0
+        continue
+      endif
+      let filename = dir..'/'..printf("%03d", index)..'.jsonl'
+      let index -= 1
 
-    call qftools#Save(filename, items)
+      call qftools#Save(filename, items)
+    endfor
+
+    return
   endfor
 endfunction
 
@@ -244,18 +248,22 @@ function! qftools#AutoLoad() abort
     return
   endif
 
-  if !isdirectory(g:qftools_autosave_dir)
-    return
-  endif
-
-  let list_count = 0
-
-  for file in glob(g:qftools_autosave_dir..'/???.jsonl', 0, 1)
-    call qftools#Load(file, {'open': 0})
-    let list_count += 1
-
-    if list_count >= g:qftools_autosave_max_count
-      break
+  for dir in g:qftools_autosave_dirs
+    if !isdirectory(expand(dir))
+      continue
     endif
+
+    let list_count = 0
+
+    for file in glob(dir..'/???.jsonl', 0, 1)
+      call qftools#Load(file, {'open': 0})
+      let list_count += 1
+
+      if list_count >= g:qftools_autosave_max_count
+        break
+      endif
+    endfor
+
+    return
   endfor
 endfunction

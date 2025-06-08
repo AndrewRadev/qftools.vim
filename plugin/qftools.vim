@@ -18,8 +18,8 @@ if !exists('g:qftools_autosave')
   let g:qftools_autosave = 0
 endif
 
-if !exists('g:qftools_autosave_dir')
-  let g:qftools_autosave_dir = expand('$HOME/.vim-qftools/')
+if !exists('g:qftools_autosave_dirs')
+  let g:qftools_autosave_dirs = ['~/.cache/vim-qftools/']
 endif
 
 if !exists('g:qftools_autosave_max_count')
